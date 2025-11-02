@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio - Frontend Developer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Stars Background Animation */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 20% 50%, #1a1a2e 0%, #000 50%);
+        }
+
+        .stars span {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.5); }
+        }
+
+        /* Sun Animation */
+        .sun-container {
+            display: none;
+        }
+
+        .sun {
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, #ffd700, #ff8c00);
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 0 80px #ffd700, 0 0 120px #ff8c00, 0 0 160px rgba(255, 140, 0, 0.5);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        .sun::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            right: -20px;
+            bottom: -20px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: rotate 10s linear infinite reverse;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.1); filter: brightness(1.2); }
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 80px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .profile-section {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 60px;
+            align-items: center;
+            margin-bottom: 100px;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .profile-image-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+        }
+
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 5px solid transparent;
+            background: linear-gradient(45deg, #ffd700, #ff8c00, #ffd700);
+            background-clip: padding-box;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.5);
+            animation: glow 3s ease-in-out infinite;
+            display: block;
+        }
+
+        .profile-image-container::before {
+            content: '';
+            position: absolute;
+            inset: -10px;
+            border-radius: 50%;
+            padding: 5px;
+            background: linear-gradient(45deg, #ffd700, #ff8c00, #ffd700);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: rotate 8s linear infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.5)); }
+            50% { filter: drop-shadow(0 0 40px rgba(255, 215, 0, 0.9)); }
+        }
+
+        .profile-info h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ffd700, #ff8c00, #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        .profile-info p {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            color: #ddd;
+        }
+
+        .highlight {
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        /* Skills Section */
+        .skills-section {
+            margin-bottom: 100px;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .skills-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            text-align: center;
+            color: #ffd700;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .skill-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s;
+            opacity: 0;
+        }
+
+        .skill-card:hover::before {
+            animation: slide 0.5s ease;
+            opacity: 1;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-10px);
+            border-color: #ffd700;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+        }
+
+        @keyframes slide {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .skill-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #ffd700;
+        }
+
+        .skill-card p {
+            color: #ccc;
+            line-height: 1.6;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            text-align: center;
+            animation: fadeInUp 1s ease-out 0.9s both;
+        }
+
+        .contact-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: #ffd700;
+        }
+
+        .contact-links {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .contact-btn {
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            color: #000;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .contact-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .contact-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5);
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .profile-section {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .profile-info h1 {
+                font-size: 2.5rem;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sun-container {
+                width: 200px;
+                height: 200px;
+                top: 10%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Stars Background -->
+    <div class="stars" id="stars"></div>
+
+    <!-- Sun Animation -->
+    <div class="sun-container">
+        <div class="sun"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <header>
+            <h2 style="font-size: 1.5rem; color: #ffd700; margin-bottom: 10px;">🌌 Welcome to My Digital Universe</h2>
+        </header>
+
+        <section class="profile-section">
+            <div class="profile-image-container">
+                <img src="yousaf.jpg" alt="Profile Photo" class="profile-image" id="profileImg">
+                <div style="text-align: center; margin-top: 20px; display: none;" id="placeholderImg">
+                    <span style="font-size: 3rem;">📸</span>
+                    <p style="color: #999; margin-top: 10px;">ضع صورتك هنا</p>
+                </div>
+            </div>
+
+            <div class="profile-info">
+                <h1>Frontend Developer</h1>
+                <p>
+                    مرحباً بك في عالمي الرقمي! أنا <span class="highlight">مطور واجهات أمامية</span> متحمس للتقنيات الحديثة والتصميم الإبداعي.
+                </p>
+                <p>
+                    بدأت رحلتي في مجال <span class="highlight">تطوير الواجهات الأمامية</span> منذ أكثر من 
+                    <span class="highlight">سنة</span>، وأعمل باستمرار على تطوير مهاراتي وإتقان أحدث التقنيات.
+                </p>
+                <p>
+                    شغفي يكمن في تحويل الأفكار الإبداعية إلى تجارب رقمية سلسة وابتكارية تترك أثراً إيجابياً على المستخدمين.
+                </p>
+            </div>
+        </section>
+
+        <section class="skills-section">
+            <h2>المهارات والتقنيات</h2>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <h3>🎨 HTML & CSS</h3>
+                    <p>إتقان بناء هيكل المواقع وتصميمها بأحدث معايير CSS</p>
+                </div>
+                <div class="skill-card">
+                    <h3>⚡ JavaScript</h3>
+                    <p>تطوير التفاعلية والديناميكية في الواجهات</p>
+                </div>
+                <div class="skill-card">
+                    <h3>⚛️ React</h3>
+                    <p>بناء تطبيقات ويب معقدة ومتطورة</p>
+                </div>
+                <div class="skill-card">
+                    <h3>📱 Responsive Design</h3>
+                    <p>تصميم متجاوب يعمل على جميع الأجهزة</p>
+                </div>
+                <div class="skill-card">
+                    <h3>🚀 Performance</h3>
+                    <p>تحسين الأداء وسرعة التحميل</p>
+                </div>
+                <div class="skill-card">
+                    <h3>✨ UI/UX</h3>
+                    <p>تصميم تجارب مستخدم متميزة وواجهات حديثة</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section class="skills-section">
+            <h2>مشاريعي السابقة 💼</h2>
+            <div class="skills-grid">
+                <div class="skill-card" style="cursor: pointer;" onclick="window.open('https://almsru.github.io/m/fox-tex-premium', '_blank')">
+                    <h3>🦊 FOX TEX</h3>
+                    <p>منصة للأقمشة الفاخرة مع إدارة المخزون والتجار</p>
+                    <p style="margin-top: 10px; font-size: 0.9rem; color: #ffd700;">👆 اضغط لعرض المشروع</p>
+                </div>
+                <div class="skill-card" style="cursor: pointer;" onclick="window.open('https://almsru.github.io/yousaf/index.html', '_blank')">
+                    <h3>🏫 المصرية للتلمذة</h3>
+                    <p>موقع تعريفي للمدرسة الثانوية الفنية مع عرض الأقسام والفروع</p>
+                    <p style="margin-top: 10px; font-size: 0.9rem; color: #ffd700;">👆 اضغط لعرض المشروع</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact-section">
+            <h2>دعنا نتواصل! 🚀</h2>
+            <div class="contact-links">
+                <a href="https://wa.me/201017636898" class="contact-btn">📱 WhatsApp</a>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Create random stars
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numberOfStars = 200;
+            
+            for (let i = 0; i < numberOfStars; i++) {
+                const star = document.createElement('span');
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.width = (Math.random() * 3 + 1) + 'px';
+                star.style.height = star.style.width;
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Handle profile image
+        const profileImg = document.getElementById('profileImg');
+        const placeholderImg = document.getElementById('placeholderImg');
+        
+        profileImg.onerror = function() {
+            this.style.display = 'none';
+            placeholderImg.style.display = 'block';
+        };
+        profileImg.onload = function() {
+            placeholderImg.style.display = 'none';
+        };
+        
+        // Show placeholder initially if no image
+        if (!profileImg.src) {
+            profileImg.style.display = 'none';
+            placeholderImg.style.display = 'block';
+        }
+
+        // Initialize
+        createStars();
+
+        // Add scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.skill-card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
